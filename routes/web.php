@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DisasterCategoryController;
 use App\Http\Controllers\DisasterController;
@@ -35,6 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/drones/mission', [DroneController::class, 'newMission'])->name('drones.mission');
+    Route::get('/controllers', [RegisteredUserController::class, 'listControllers'])->name('controllers');
+    Route::get('/controller/{id}', [RegisteredUserController::class, 'showController'])->name('controller');
     Route::post('/drones/record-mission', [DroneController::class, 'recordMission'])->name('drones.record-mission');
     Route::resource('drones', DroneController::class);
     Route::resource('disaster-categories', DisasterCategoryController::class);

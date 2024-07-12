@@ -21,16 +21,7 @@
                                     <h6 class="card-text">Controller: {{ $drone->controller->name }}</h6>
                                     <h6 class="card-text">Fleet Number: {{ $drone->fleet_no }}</h6>
                                     <h6 class="card-text">Battery Level: {{ $drone->battery_level }}%</h6>
-                                    <h6 class="card-text">Status: {{ $drone->is_active ? 'Active' : 'Inactive' }}
-                                    </h6>
-                                    <form action="{{ route('drones.update-battery', ['id' => $drone->id]) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <div>
-                                            <input type="number" name="battery_level" id="battery_level" value="100" required hidden>
-                                        </div>
-                                        <button class="charge-battery" type="submit">Charge</button>
-                                    </form>                                        
+                                    <h6 class="card-text">Status: {{ $drone->is_active ? 'Active' : 'Inactive' }}</h6>
                                 </div>
                             </div>
                         </div>

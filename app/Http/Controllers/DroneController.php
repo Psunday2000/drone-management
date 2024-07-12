@@ -20,6 +20,12 @@ class DroneController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();
+
+        if ($user) {
+            $drones = Drone::where('controller_id', $user->id)->simplePaginate(5);
+        }
+        
         $drones = Drone::latest()->simplePaginate(5);
 
         return view('drones.index', compact('drones'));
@@ -163,6 +169,10 @@ class DroneController extends Controller
         $disaster->upload = $videoPath;
 
         $disaster->save();
+
+        $drone = Drone::findorFail($validatedData['drone_id']);
+        $drone->battery_level = 100;
+        $drone->save();
 
         return redirect()->route('drones.mission')->with('success', 'Mission Completed');
     }

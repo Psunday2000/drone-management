@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Disaster;
+use Illuminate\Support\Facades\Auth;
 
 class DisasterController extends Controller
 {
@@ -14,8 +15,13 @@ class DisasterController extends Controller
      */
     public function index()
     {
-        $disasters = Disaster::latest()->simplePaginate(5);
+        $user = Auth::user();
 
+        if ($user) {
+            $disasters = Disaster::where('created_by', $user->id)->simplePaginate(5);
+        }
+        $disasters = Disaster::latest()->simplePaginate(5);
+        
         return view('disasters.index', compact('disasters'));
     }
 

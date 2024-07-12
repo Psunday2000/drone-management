@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Drone;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -35,10 +36,12 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $role_id = 2;
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role_id' => $role_id,
         ]);
 
         event(new Registered($user));
@@ -46,5 +49,20 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
+    }
+
+    public function listControllers(){
+        $controllers = User::where('role_id', 2)->simplePaginate(5);
+
+        foreach ($controllers as $controller) {
+            $controller->drone_count = Drone::where('controller_id', $controller->id)->count();
+        }
+
+        return view('controllers', compact('controllers'));
+    }
+    public function showController($controller_id){
+        $controller = User::findorFail($controller_id);
+        $drones = Drone::where('controller_id', $controller->id)->get();
+        return view('controller', compact('controller', 'drones'));
     }
 }

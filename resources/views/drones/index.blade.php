@@ -4,9 +4,11 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="p-3">
-                <a href="{{route('drones.create')}}" class="btn btn-primary">New Drone</a>
-            </div>
+            @if (Auth::user()->role_id == 1)
+                <div class="p-3">
+                    <a href="{{route('drones.create')}}" class="btn btn-primary">New Drone</a>
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">Drones</div>
                 <div class="card-body">
